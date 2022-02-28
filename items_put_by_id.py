@@ -7,7 +7,6 @@ from datetime import datetime
 @put("/items/<item_id>")
 @put("/<language>/items/<item_id>")
 def _(language="en", item_id=""):
-
   try:
     # Maybe the user enters a language that is not supported, then default to english
     # Use any key to see if the language is in the errors dictionary
