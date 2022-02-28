@@ -10,19 +10,19 @@ def _(language = "en", item_id = ""):
     # Use any key to see if the language is in the errors dictionary
     if f"{language}_server_error" not in x._errors : language = "en"
     item_id, error = x._is_uuid4(item_id, language)
-    if error : return x._response(400, error)
+    if error : return x._send(400, error)
   except Exception as ex:
     print(ex)
-    return x._response(500, x._errors[f"{language}_server_error"])
+    return x._send(500, x._errors[f"{language}_server_error"])
 
   try:
     db = x._db_connect("database.sqlite")
     item = db.execute("SELECT * FROM items WHERE item_id = ?", (item_id,)).fetchone()
-    if not item: return x._response(204, "")
+    if not item: return x._send(204, "")
     return item
   except Exception as ex:
     print(ex)
-    return x._response(500, x._errors[f"{language}_server_error"])
+    return x._send(500, x._errors[f"{language}_server_error"])
   finally:
     db.close()
 
