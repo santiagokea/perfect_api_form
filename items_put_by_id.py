@@ -7,14 +7,28 @@ from datetime import datetime
 @put("/items/<item_id>")
 @put("/<language>/items/<item_id>")
 def _(language="en", item_id=""):
+
+  # VALIDATE
   try:
     # Maybe the user enters a language that is not supported, then default to english
     # Use any key to see if the language is in the errors dictionary
     if f"{language}_server_error" not in x._errors : language = "en"
-
     item_id, error = x._is_uuid4(item_id, language)
     if error : return x._send(400, error)      
 
+    allowed_keys = ["item_name", "item_price"]
+    for key in request.forms.keys():
+      if not key in allowed_keys:
+        print(key)
+        # return x._send(400, f"Forbidded key in the request. You can only update: {allowed_keys}")
+        return x._send(400, f"Forbidded key {key}")
+
+  except Exception as ex:
+    print(ex)
+    return x._send(500, x._errors[f"{language}_server_error"])
+
+
+  try:
     # Get the item to overwrite it with new data
     db = x._db_connect("database.sqlite")
     item = db.execute("SELECT * FROM items WHERE item_id = ?", (item_id,)).fetchone()
