@@ -8,7 +8,6 @@ from datetime import datetime
 @put("/<language>/items/<item_id>")
 def _(language="en", item_id=""):
 
-<<<<<<< HEAD
   allowed_keys = ["item_name", "item_price"]
   errors = {
     "en":f"Only posible to update: {allowed_keys}", 
@@ -18,22 +17,17 @@ def _(language="en", item_id=""):
   new_item = {}
   query_set_parts = []
 
-=======
->>>>>>> ada91a5a0ba0bb2f0f57f14fc54f26608450121a
   # VALIDATE
   try:
     
     # Maybe the user enters a language that is not supported, then default to english
     # Use any key to see if the language is in the errors dictionary
     if f"{language}_server_error" not in x._errors : language = "en"
-<<<<<<< HEAD
 
     # The user has not passed any keys, inform about the keys allowed
     if not request.forms.keys(): return x._send(400, errors[f"{language}"])
 
     # Validate the item_id
-=======
->>>>>>> ada91a5a0ba0bb2f0f57f14fc54f26608450121a
     item_id, error = x._is_uuid4(item_id, language)
     if error : return x._send(400, error)      
     new_item["item_id"] = item_id
@@ -44,7 +38,6 @@ def _(language="en", item_id=""):
         print(key)
         return x._send(400, errors[f"{language}"])
 
-<<<<<<< HEAD
     # Validate each allowed key (if given by the client)
     if request.forms.get("item_name"):
       item_name, error = x._is_item_name(request.forms.get("item_name"), language)
@@ -57,23 +50,11 @@ def _(language="en", item_id=""):
       if error: return x._send(400, error)
       query_set_parts.append("item_price = :item_price")
       new_item["item_price"] = item_price
-=======
-    allowed_keys = ["item_name", "item_price"]
-    for key in request.forms.keys():
-      if not key in allowed_keys:
-        print(key)
-        # return x._send(400, f"Forbidded key in the request. You can only update: {allowed_keys}")
-        return x._send(400, f"Forbidded key {key}")
->>>>>>> ada91a5a0ba0bb2f0f57f14fc54f26608450121a
 
   except Exception as ex:
     print(ex)
     return x._send(500, x._errors[f"{language}_server_error"])
 
-<<<<<<< HEAD
-=======
-
->>>>>>> ada91a5a0ba0bb2f0f57f14fc54f26608450121a
   try:
     # Get the item to overwrite it with new data
     db = x._db_connect("database.sqlite")
