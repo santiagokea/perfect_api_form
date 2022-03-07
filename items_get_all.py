@@ -5,7 +5,7 @@ import json
 ##############################
 @get("/items")
 @get("/<language>/items")
-def _(language = "en"):
+def _(language="en"):
   try:
     # Maybe the user enters a language that is not supported, then default to english
     # Use any key to see if the language is in the errors dictionary

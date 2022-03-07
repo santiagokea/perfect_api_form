@@ -1,8 +1,26 @@
-from bottle import default_app, delete, error, get, request, response, run
+from bottle import default_app, delete, error, get, request, response, static_file, run
+
+
+##############################
+@get("/app.css")
+def _():
+  return static_file("app.css", root=".")
+
+##############################
+@get("/app.js")
+def _():
+  return static_file("app.js", root=".")
+
+##############################
+@get("/images/<image_name>")
+def _(image_name):
+  print(image_name)
+  return static_file(image_name, root="./images")
 
 
 ##############################
 # GET
+import index
 import items_get_by_id
 import items_get_all
 
